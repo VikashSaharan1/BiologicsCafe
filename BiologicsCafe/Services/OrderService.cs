@@ -1,26 +1,27 @@
 ﻿using BiologicsCafe.Models;
+using BiologicsCafe.Repository;
 
 namespace BiologicsCafe.Services
 {
     public class OrderService
     {
-        private readonly List<OrderItem> _orderItems;
-        public OrderService()
+        private readonly IOrderRepository _orderRepository;
+        public OrderService(IOrderRepository orderRepository)
         {
-            _orderItems = new List<OrderItem>();
+           _orderRepository = orderRepository;
         }
 
         public void AddOrder(MenuItem item, int quantity)
         {
-            var orderItem = _orderItems.FirstOrDefault(o => o.Item.Name == item.Name);
-            if(orderItem != null)
-                orderItem.Quantity += quantity;
+            var orderItem = _orderRepository.GetOrders()?.FirstOrDefault(o => o.Item.Name == item.Name);
+            if (orderItem != null)
+                _orderRepository.UpdateQuantity(item, quantity);
             else
-                _orderItems.Add(new OrderItem { Item = item, Quantity = quantity});
+                _orderRepository.AddOrderItem(new OrderItem { Item = item, Quantity = quantity });
         }
 
-        public List<OrderItem> GetOrderItems() => _orderItems;
+        public IList<OrderItem> GetOrderItems() => _orderRepository.GetOrders();
 
-        public decimal GetSubtotal() => _orderItems.Sum(o => o.TotalPrice);
+        public decimal GetSubtotal() => _orderRepository.GetSubtotalOrderItem();
     }
 }

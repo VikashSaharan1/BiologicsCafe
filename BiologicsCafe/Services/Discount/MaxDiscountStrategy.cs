@@ -12,7 +12,7 @@ namespace BiologicsCafe.Services.Discount
             _maxCap = maxCap;
         }
 
-        public decimal Calculate(List<OrderItem> orders)
+        public decimal Calculate(IList<OrderItem> orders)
         {
             return Math.Min(_discountStrategy.Calculate(orders), _maxCap);
         }

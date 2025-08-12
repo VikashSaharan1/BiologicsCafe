@@ -9,6 +9,6 @@ namespace BiologicsCafe.Services.Discount
 {
     public interface IDiscountStrategy
     {
-        decimal Calculate(List<OrderItem> orders);
+        decimal Calculate(IList<OrderItem> orders);
     }
 }

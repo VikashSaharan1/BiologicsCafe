@@ -15,7 +15,7 @@ namespace BiologicsCafe.Services.Discount
             _strategies = strategies.ToList();
         }
 
-        public decimal Calculate(List<OrderItem> orderItems)
+        public decimal Calculate(IList<OrderItem> orderItems)
         {
             return _strategies.Max(s => s.Calculate(orderItems));
         }

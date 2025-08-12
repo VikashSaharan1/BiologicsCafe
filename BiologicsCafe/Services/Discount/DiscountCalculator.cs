@@ -20,7 +20,7 @@ namespace BiologicsCafe.Services.Discount
             var bestStrategy = new BestDiscountSelectorStrategy(stratgiesList);
             _strategy = new MaxDiscountStrategy(bestStrategy);
         }
-        public decimal CalculateDiscount(List<OrderItem> orderItems)
+        public decimal CalculateDiscount(IList<OrderItem> orderItems)
         {
             return _strategy.Calculate(orderItems);
         }

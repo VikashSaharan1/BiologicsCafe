@@ -1,4 +1,6 @@
-﻿using BiologicsCafe.Services;
+﻿using BiologicsCafe.Repository;
+using BiologicsCafe.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BiologicsCafe
 {
@@ -6,8 +8,15 @@ namespace BiologicsCafe
     {
         static void Main(string[] args)
         {
-            var menuService = new MenuService();
-            var orderService = new OrderService();
+           var serviceProvider = new ServiceCollection()
+           .AddSingleton<IMenuRepository, MenuRepository>()
+           .AddScoped<IOrderRepository, OrderRepository>()
+           .AddTransient<MenuService>()
+           .AddTransient<OrderService>() 
+           .BuildServiceProvider();
+
+            var menuService = serviceProvider.GetRequiredService<MenuService>();
+            var orderService = serviceProvider.GetRequiredService<OrderService>();
             var discountService = new DiscountService();
 
             menuService.DisplayMenu();
@@ -50,9 +59,9 @@ namespace BiologicsCafe
             foreach (var item in orderItems)
                 Console.WriteLine($"{item.Item.Name}(£{item.Item.Price}) x {item.Quantity} = £{item.TotalPrice}");
 
-            Console.WriteLine($"SubTotal: £{subtotal}");
-            Console.WriteLine($"Discount: £{discount}");
-            Console.WriteLine($"Total: £{total}");
+            Console.WriteLine($"SubTotal: £{subtotal:F2}");
+            Console.WriteLine($"Discount: £{discount:F2}");
+            Console.WriteLine($"Total: £{total:F2}");
         }
     }
 }

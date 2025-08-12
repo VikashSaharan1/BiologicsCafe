@@ -9,7 +9,7 @@ namespace BiologicsCafe.Services.Discount
 {
     public class FoodAndDrinkDiscount : IDiscountStrategy
     {
-        public decimal Calculate(List<OrderItem> orderItems)
+        public decimal Calculate(IList<OrderItem> orderItems)
         {
             decimal discount = 0;
             bool hasFood = orderItems.Any(o => o.Item.Type == ItemType.Food);
